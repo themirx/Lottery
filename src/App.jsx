@@ -28,6 +28,7 @@ const shuffle = (values) => {
 };
 
 export default function App() {
+  const [view, setView] = useState("home");
   const [participants, setParticipants] = useState(EMPTY_PARTICIPANTS);
   const [winnerCount, setWinnerCount] = useState("1");
   const [step, setStep] = useState("form");
@@ -97,106 +98,188 @@ export default function App() {
 
   return (
     <div className="app">
-      <header className="hero">
-        <span className="pill">Lottery Draw</span>
-        <h1>Lucky Winner Selector</h1>
-        <p>
-          Create a list, draw winners instantly, and keep the results clean and fair.
-        </p>
-      </header>
+      {view === "home" && (
+        <section className="page" key="home">
+          <header className="hero home-hero">
+            <span className="pill">Party Hub</span>
+            <h1>Choose Your Next Move</h1>
+            <p>
+              Pick an activity to kick things off. Smooth, modern, and ready for a
+              draw.
+            </p>
+          </header>
 
-      {step === "form" ? (
-        <section className="card">
-          <form onSubmit={handleSubmit} className="form">
-            <div className="section-header">
-              <div>
-                <h2>Participants</h2>
-                <p>Enter each participant name once. Duplicates are removed automatically.</p>
-              </div>
-              <div className="count-chip">{participantCount} ready</div>
-            </div>
-
-            <div className="participants">
-              {participants.map((name, index) => (
-                <div className="participant-row" key={`participant-${index}`}>
-                  <label className="sr-only" htmlFor={`participant-${index}`}>
-                    Participant {index + 1}
-                  </label>
-                  <input
-                    id={`participant-${index}`}
-                    type="text"
-                    placeholder={`Participant ${index + 1}`}
-                    value={name}
-                    onChange={(event) => handleNameChange(index, event.target.value)}
-                  />
-                  <button
-                    className="ghost"
-                    type="button"
-                    onClick={() => removeParticipant(index)}
-                    disabled={participants.length === 1}
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <button className="secondary" type="button" onClick={addParticipant}>
-              + Add another
+          <div className="action-grid">
+            <button
+              className="action-card"
+              type="button"
+              onClick={() => setView("lottery")}
+            >
+              <span className="action-badge">Luck</span>
+              <span className="action-title">Lottery</span>
+              <span className="action-desc">
+                Build a list of names and draw winners instantly.
+              </span>
+              <span className="action-cta">Start the draw</span>
             </button>
 
-            <div className="field">
-              <label htmlFor="winner-count">Number of winners</label>
-              <input
-                id="winner-count"
-                type="number"
-                min="1"
-                step="1"
-                value={winnerCount}
-                onChange={(event) => setWinnerCount(event.target.value)}
-              />
-            </div>
-
-            {error && <div className="message error">{error}</div>}
-
-            <button className="primary" type="submit">
-              Draw winners
+            <button
+              className="action-card alt"
+              type="button"
+              onClick={() => setView("game")}
+            >
+              <span className="action-badge">Game</span>
+              <span className="action-title">Who Is the Bad Person?</span>
+              <span className="action-desc">
+                A playful social game for calling out the mischief.
+              </span>
+              <span className="action-cta">Enter the game</span>
             </button>
-          </form>
+          </div>
         </section>
-      ) : (
-        <section className="card results">
-          <div className="section-header">
-            <div>
-              <h2>Winning Names</h2>
-              <p>Results generated instantly with no repeat winners.</p>
-            </div>
-            <div className="count-chip">{winners.length} winners</div>
-          </div>
+      )}
 
-          <div className="winner-list">
-            {winners.map((winner, index) => (
-              <div
-                className="winner-item"
-                style={{ "--i": index }}
-                key={`${winner}-${index}`}
-              >
-                <span className="winner-rank">#{index + 1}</span>
-                <span className="winner-name">{winner}</span>
+      {view === "lottery" && (
+        <section className="page" key={`lottery-${step}`}>
+          <header className="hero">
+            <div className="hero-top">
+              <span className="pill">Lottery Draw</span>
+              <button className="ghost" type="button" onClick={() => setView("home")}>
+                Back to main
+              </button>
+            </div>
+            <h1>Lucky Winner Selector</h1>
+            <p>
+              Create a list, draw winners instantly, and keep the results clean and
+              fair.
+            </p>
+          </header>
+
+          {step === "form" ? (
+            <section className="card">
+              <form onSubmit={handleSubmit} className="form">
+                <div className="section-header">
+                  <div>
+                    <h2>Participants</h2>
+                    <p>
+                      Enter each participant name once. Duplicates are removed
+                      automatically.
+                    </p>
+                  </div>
+                  <div className="count-chip">{participantCount} ready</div>
+                </div>
+
+                <div className="participants">
+                  {participants.map((name, index) => (
+                    <div className="participant-row" key={`participant-${index}`}>
+                      <label className="sr-only" htmlFor={`participant-${index}`}>
+                        Participant {index + 1}
+                      </label>
+                      <input
+                        id={`participant-${index}`}
+                        type="text"
+                        placeholder={`Participant ${index + 1}`}
+                        value={name}
+                        onChange={(event) => handleNameChange(index, event.target.value)}
+                      />
+                      <button
+                        className="ghost"
+                        type="button"
+                        onClick={() => removeParticipant(index)}
+                        disabled={participants.length === 1}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <button className="secondary" type="button" onClick={addParticipant}>
+                  + Add another
+                </button>
+
+                <div className="field">
+                  <label htmlFor="winner-count">Number of winners</label>
+                  <input
+                    id="winner-count"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={winnerCount}
+                    onChange={(event) => setWinnerCount(event.target.value)}
+                  />
+                </div>
+
+                {error && <div className="message error">{error}</div>}
+
+                <button className="primary" type="submit">
+                  Draw winners
+                </button>
+              </form>
+            </section>
+          ) : (
+            <section className="card results">
+              <div className="section-header">
+                <div>
+                  <h2>Winning Names</h2>
+                  <p>Results generated instantly with no repeat winners.</p>
+                </div>
+                <div className="count-chip">{winners.length} winners</div>
               </div>
-            ))}
-          </div>
 
-          {duplicatesRemoved > 0 && (
-            <div className="message info">
-              {duplicatesRemoved} duplicate name
-              {duplicatesRemoved === 1 ? " was" : "s were"} removed before drawing.
-            </div>
+              <div className="winner-list">
+                {winners.map((winner, index) => (
+                  <div
+                    className="winner-item"
+                    style={{ "--i": index }}
+                    key={`${winner}-${index}`}
+                  >
+                    <span className="winner-rank">#{index + 1}</span>
+                    <span className="winner-name">{winner}</span>
+                  </div>
+                ))}
+              </div>
+
+              {duplicatesRemoved > 0 && (
+                <div className="message info">
+                  {duplicatesRemoved} duplicate name
+                  {duplicatesRemoved === 1 ? " was" : "s were"} removed before drawing.
+                </div>
+              )}
+
+              <button className="primary" type="button" onClick={handleReset}>
+                Reset draw
+              </button>
+            </section>
           )}
+        </section>
+      )}
 
-          <button className="primary" type="button" onClick={handleReset}>
-            Reset draw
-          </button>
+      {view === "game" && (
+        <section className="page" key="game">
+          <header className="hero">
+            <div className="hero-top">
+              <span className="pill">Party Game</span>
+              <button className="ghost" type="button" onClick={() => setView("home")}>
+                Back to main
+              </button>
+            </div>
+            <h1>Who Is the Bad Person?</h1>
+            <p>
+              A quick social game space. Start here, then build the rules your way.
+            </p>
+          </header>
+
+          <section className="card game-card">
+            <h2>Game Lobby</h2>
+            <p>
+              This page is ready for the game flow. Add players, roles, and rounds
+              when you are ready.
+            </p>
+            <button className="primary" type="button" onClick={() => setView("home")}>
+              Return to main
+            </button>
+          </section>
         </section>
       )}
     </div>

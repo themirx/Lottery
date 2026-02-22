@@ -47,10 +47,29 @@ body {
   gap: 32px;
 }
 
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  animation: pageEnter 0.55s ease both;
+}
+
 .hero {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.home-hero {
+  gap: 16px;
 }
 
 .hero h1 {
@@ -78,13 +97,86 @@ body {
   color: var(--primary-dark);
 }
 
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.action-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  padding: 28px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.action-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 32px 70px rgba(15, 23, 42, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.action-card:active {
+  transform: translateY(-2px);
+}
+
+.action-card.alt {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+}
+
+.action-badge {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0f172a;
+  background: rgba(249, 115, 22, 0.2);
+  font-weight: 600;
+}
+
+.action-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Fraunces", "Times New Roman", serif;
+  color: #0f172a;
+}
+
+.action-desc {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.action-cta {
+  margin-top: auto;
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
 .card {
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.92);
   border-radius: 24px;
   padding: 32px;
   box-shadow: var(--shadow);
   border: 1px solid rgba(15, 23, 42, 0.08);
   animation: floatIn 0.6s ease both;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .form {
@@ -220,6 +312,22 @@ button:disabled {
   gap: 20px;
 }
 
+.game-card {
+  display: grid;
+  gap: 12px;
+}
+
+.game-card h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-family: "Fraunces", "Times New Roman", serif;
+}
+
+.game-card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
 .winner-list {
   display: grid;
   gap: 12px;
@@ -288,9 +396,24 @@ button:disabled {
   }
 }
 
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 720px) {
   .card {
     padding: 24px;
+  }
+
+  .action-grid {
+    grid-template-columns: 1fr;
   }
 
   .participant-row {
