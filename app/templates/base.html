@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lottery Room</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="background">
+      <div class="orb orb--mint"></div>
+      <div class="orb orb--sun"></div>
+      <div class="grid"></div>
+    </div>
+
+    <div class="shell">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Lottery System</p>
+          <h1>Fair draws, frictionless setup.</h1>
+          <p class="subtitle">
+            Run statistically fair lotteries with unique winners and transparent rules.
+          </p>
+        </div>
+        {% if user %}
+        <form method="post" action="{{ url_for('lottery.logout') }}">
+          <button class="ghost" type="submit">Sign out</button>
+        </form>
+        {% endif %}
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+          <div class="alert alert--{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endwith %}
+
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="footer">
+        <p>Built for fairness, powered by secure randomness.</p>
+      </footer>
+    </div>
+  </body>
+</html>

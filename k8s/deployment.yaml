@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lottery-app
+  labels:
+    app: lottery-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lottery-app
+  template:
+    metadata:
+      labels:
+        app: lottery-app
+    spec:
+      containers:
+        - name: lottery
+          image: lottery:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: lottery-secret
+          env:
+            - name: SESSION_COOKIE_SECURE
+              value: "false"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
